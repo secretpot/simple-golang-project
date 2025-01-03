@@ -44,16 +44,10 @@ pipeline {
 
 def stage_check() {
     stage('Check Parameters') {
-        steps {
-            echo "build branch: ${params.BUILD_BRANCH}"
-            echo "version: ${params.VERSION}"
-            echo "is release: ${params.RELEASE}"
-        }
+        echo "build branch: ${params.BUILD_BRANCH}"
     }
     stage('Check others') {
-        steps {
-            echo 'OK'
-        }
+        echo 'OK'
     }
 }
 

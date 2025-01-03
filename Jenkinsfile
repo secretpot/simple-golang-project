@@ -21,44 +21,23 @@ pipeline {
             }
         }
         stage("Build") {
-            parallel {
-                steps {
-                    script {
-                        stage_build_core()
-                    }
-                }
-                steps {
-                    script {
-                        stage_build_web()
-                    }
+            steps {
+                script {
+                    stage_build()
                 }
             }
         }
         stage("Test") {
-            parallel {
-                steps {
-                    script {
-                        stage_test_core()
-                    }
-                }
-                steps {
-                    script {
-                        stage_test_web()
-                    }
+            steps {
+                script {
+                    stage_test()
                 }
             }
         }
         stage("Deploy") {
-            parallel {
-                steps {
-                    script {
-                        stage_deploy_core()
-                    }
-                }
-                steps {
-                    script {
-                        stage_deploy_web()
-                    }
+            steps {
+                script {
+                    stage_deploy()
                 }
             }
         }
@@ -67,44 +46,54 @@ pipeline {
 
 def stage_check(Map params) {
     stage('Check Parameters') {
-        echo "build branch: ${params.BUILD_BRANCH}"
+        echo("build branch: ${params.BUILD_BRANCH}")
     }
     stage('Check others') {
-        echo 'OK'
+        echo('OK')
     }
 }
 
-def stage_build_core() {
-    stage("Build core") {
-        echo "build core"
-    }
-}
-def stage_build_web() {
-    stage("Build web") {
-        echo "build web"
-    }
-}
-
-def stage_test_core() {
-    stage("Test core") {
-        echo "test core"
-    }
-}
-
-def stage_test_web() {
-    stage("Test web") {
-        echo "test web"
+def stage_build() {
+    parallel {
+        stage("Build core") {
+            echo("build core")
+            sleep(0.5)
+            echo("core built")
+        }
+        stage("Build web") {
+            echo "build web"
+            sleep(0.5)
+            echo("web built")
+        }
     }
 }
 
-def stage_deploy_core() {
-    stage("Deploy core") {
-        echo "deploy core"
+def stage_test() {
+    parallel {
+        stage("Test core") {
+            echo('test core')
+            sleep(0.5)
+            echo("core tested")
+        }
+        stage("Test web") {
+            echo('test web')
+            sleep(0.5)
+            echo("web tested")
+        }
     }
 }
 
-def stage_deploy_web() {
-    stage("Deploy web") {
-        echo "deploy web"
+def stage_deploy() {
+    parallel {
+        stage("Deploy core") {
+            echo('deploy core')
+            sleep(0.5)
+            echo("core deployed")
+        }
+        stage("Deploy web") {
+            echo('deploy web')
+            sleep(0.5)
+            echo("web deployed")
+        }
     }
 }

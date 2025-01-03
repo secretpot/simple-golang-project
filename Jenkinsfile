@@ -12,76 +12,106 @@ pipeline {
 
     stages {
         stage('Check') {
-            stages {
-                stage('Check Parameters') {
-                    steps {
-                        echo "build branch: ${params.BUILD_BRANCH}"
-                        echo "version: ${params.VERSION}"
-                        echo "is release: ${params.RELEASE}"
-                    }
-                }
-                stage('Check others') {
-                    steps {
-                        echo 'OK'
-                    }
+            steps {
+                script {
+                    stage_check()
                 }
             }
         }
         stage("Build") {
-            parallel {
-                stage("Build core") {
-                    steps {
-                        echo "build core"
-                    }
-                }
-                stage("Build web") {
-                    steps {
-                        echo "build web"
-                    }
-                }
-                stage("Build mobile") {
-                    steps {
-                        echo "build mobile"
-                    }
+            steps {
+                script {
+                    stage_build()
                 }
             }
         }
         stage("Test") {
-            parallel {
-                stage("Test core") {
-                    steps {
-                        echo "test core"
-                    }
-                }
-                stage("Test web") {
-                    steps {
-                        echo "test web"
-                    }
-                }
-                stage("Test mobile") {
-                    steps {
-                        echo "test mobile"
-                    }
+            steps {
+                script {
+                    stage_test()
                 }
             }
         }
         stage("Deploy") {
-            parallel {
-                stage("Deploy core") {
-                    steps {
-                        echo "deploy core"
-                    }
-                }
-                stage("Deploy web") {
-                    steps {
-                        echo "deploy web"
-                    }
-                }
-                stage("Deploy mobile") {
-                    steps {
-                        echo "deploy mobile"
-                    }
-                }
+            steps {
+                script [
+                    stage_deploy()
+                ]
+            }
+        }
+    }
+}
+
+def stage_check() {
+    stage('Check Parameters') {
+        steps {
+            echo "build branch: ${params.BUILD_BRANCH}"
+            echo "version: ${params.VERSION}"
+            echo "is release: ${params.RELEASE}"
+        }
+    }
+    stage('Check others') {
+        steps {
+            echo 'OK'
+        }
+    }
+}
+
+def stage_build() {
+    parallel {
+        stage("Build core") {
+            steps {
+                echo "build core"
+            }
+        }
+        stage("Build web") {
+            steps {
+                echo "build web"
+            }
+        }
+        stage("Build mobile") {
+            steps {
+                echo "build mobile"
+            }
+        }
+    }
+}
+
+def stage_test() {
+    parallel {
+        stage("Test core") {
+            steps {
+                echo "test core"
+            }
+        }
+        stage("Test web") {
+            steps {
+                echo "test web"
+            }
+        }
+        stage("Test mobile") {
+            steps {
+                echo "test mobile"
+            }
+        }
+    }
+}
+
+def stage_deploy() {
+    parallel {
+        stage("Deploy core") {
+            steps {
+                echo "deploy core"
+            }
+        }
+        stage("Deploy web") {
+            steps {
+                echo "deploy web"
+            }
+        }
+        stage("Deploy mobile") {
+            steps {
+                echo "deploy mobile"
             }
         }
     }

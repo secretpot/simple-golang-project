@@ -54,46 +54,46 @@ def stage_check(Map params) {
 }
 
 def stage_build() {
-    parallel {
-        stage("Build core") {
+    parallel(
+        'Build core': {
             echo("build core")
             sleep(0.5)
             echo("core built")
-        }
-        stage("Build web") {
-            echo "build web"
+        },
+        'Build web': {
+            echo("build web")
             sleep(0.5)
             echo("web built")
         }
-    }
+    )
 }
 
 def stage_test() {
-    parallel {
-        stage("Test core") {
-            echo('test core')
+    parallel(
+        'Test core': {
+            echo("test core")
             sleep(0.5)
             echo("core tested")
-        }
-        stage("Test web") {
-            echo('test web')
+        },
+        'Test web': {
+            echo("test web")
             sleep(0.5)
             echo("web tested")
         }
-    }
+    )
 }
 
 def stage_deploy() {
-    parallel {
-        stage("Deploy core") {
-            echo('deploy core')
+    parallel(
+        'Deploy core': {
+            echo("deploy core")
             sleep(0.5)
             echo("core deployed")
-        }
-        stage("Deploy web") {
-            echo('deploy web')
+        },
+        'Deploy web': {
+            echo("deploy web")
             sleep(0.5)
             echo("web deployed")
         }
-    }
+    )
 }

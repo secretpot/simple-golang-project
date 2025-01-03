@@ -12,16 +12,18 @@ pipeline {
 
     stages {
         stage('Check') {
-            stage('Check Parameters') {
-                steps {
-                    echo "build branch: ${params.BUILD_BRANCH}"
-                    echo "version: ${params.VERSION}"
-                    echo "is release: ${params.RELEASE}"
+            stages {
+                stage('Check Parameters') {
+                    steps {
+                        echo "build branch: ${params.BUILD_BRANCH}"
+                        echo "version: ${params.VERSION}"
+                        echo "is release: ${params.RELEASE}"
+                    }
                 }
-            }
-            stage('Check others') {
-                steps {
-                    echo 'OK'
+                stage('Check others') {
+                    steps {
+                        echo 'OK'
+                    }
                 }
             }
         }

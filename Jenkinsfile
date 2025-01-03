@@ -1,6 +1,8 @@
 pipeline {
-    agent node {
-        label 'go'
+    agent {
+        node {
+            label 'go'
+        }
     }
     parameters {
         string(name: 'BUILD_BRANCH', defaultValue: "develop/${VERSION}", description: '请输入分支号')

@@ -22,13 +22,13 @@ pipeline {
         }
         stage("Build") {
             parallel {
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_build_core()
                     }
                 }
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_build_web()
                     }
                 }
@@ -36,13 +36,13 @@ pipeline {
         }
         stage("Test") {
             parallel {
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_test_core()
                     }
                 }
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_test_web()
                     }
                 }
@@ -50,13 +50,13 @@ pipeline {
         }
         stage("Deploy") {
             parallel {
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_deploy_core()
                     }
                 }
-                script {
-                    steps {
+                steps {
+                    script {
                         stage_deploy_web()
                     }
                 }

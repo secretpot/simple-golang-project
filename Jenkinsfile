@@ -23,30 +23,42 @@ pipeline {
         stage("Build") {
             parallel {
                 script {
-                    stage_build_core()
+                    steps {
+                        stage_build_core()
+                    }
                 }
                 script {
-                    stage_build_web()
+                    steps {
+                        stage_build_web()
+                    }
                 }
             }
         }
         stage("Test") {
             parallel {
                 script {
-                    stage_test_core()
+                    steps {
+                        stage_test_core()
+                    }
                 }
                 script {
-                    stage_test_web()
+                    steps {
+                        stage_test_web()
+                    }
                 }
             }
         }
         stage("Deploy") {
             parallel {
                 script {
-                    stage_deploy_core()
+                    steps {
+                        stage_deploy_core()
+                    }
                 }
                 script {
-                    stage_deploy_web()
+                    steps {
+                        stage_deploy_web()
+                    }
                 }
             }
         }

@@ -14,35 +14,46 @@ pipeline {
         stage('Check') {
             steps {
                 script {
-                    stage_check()
+                    def map = [:]
+                    map.put("BUILD_BRANCH", BUILD_BRANCH)
+                    stage_check(map)
                 }
             }
         }
         stage("Build") {
-            steps {
+            parallel {
                 script {
-                    stage_build()
+                    stage_build_core()
+                }
+                script {
+                    stage_build_web()
                 }
             }
         }
         stage("Test") {
-            steps {
+            parallel {
                 script {
-                    stage_test()
+                    stage_test_core()
+                }
+                script {
+                    stage_test_web()
                 }
             }
         }
         stage("Deploy") {
-            steps {
+            parallel {
                 script {
-                    stage_deploy()
+                    stage_deploy_core()
+                }
+                script {
+                    stage_deploy_web()
                 }
             }
         }
     }
 }
 
-def stage_check() {
+def stage_check(Map params) {
     stage('Check Parameters') {
         echo "build branch: ${params.BUILD_BRANCH}"
     }
@@ -51,62 +62,37 @@ def stage_check() {
     }
 }
 
-def stage_build() {
-    parallel {
-        stage("Build core") {
-            steps {
-                echo "build core"
-            }
-        }
-        stage("Build web") {
-            steps {
-                echo "build web"
-            }
-        }
-        stage("Build mobile") {
-            steps {
-                echo "build mobile"
-            }
-        }
+def stage_build_core() {
+    stage("Build core") {
+        echo "build core"
+    }
+}
+def stage_build_web() {
+    stage("Build web") {
+        echo "build web"
     }
 }
 
-def stage_test() {
-    parallel {
-        stage("Test core") {
-            steps {
-                echo "test core"
-            }
-        }
-        stage("Test web") {
-            steps {
-                echo "test web"
-            }
-        }
-        stage("Test mobile") {
-            steps {
-                echo "test mobile"
-            }
-        }
+def stage_test_core() {
+    stage("Test core") {
+        echo "test core"
     }
 }
 
-def stage_deploy() {
-    parallel {
-        stage("Deploy core") {
-            steps {
-                echo "deploy core"
-            }
-        }
-        stage("Deploy web") {
-            steps {
-                echo "deploy web"
-            }
-        }
-        stage("Deploy mobile") {
-            steps {
-                echo "deploy mobile"
-            }
-        }
+def stage_test_web() {
+    stage("Test web") {
+        echo "test web"
+    }
+}
+
+def stage_deploy_core() {
+    stage("Deploy core") {
+        echo "deploy core"
+    }
+}
+
+def stage_deploy_web() {
+    stage("Deploy web") {
+        echo "deploy web"
     }
 }
